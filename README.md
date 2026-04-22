@@ -4,7 +4,7 @@
 
 ## 最新バージョン
 
-- 最新: `v0.0.8`
+- 最新: `v0.0.9`
 - 構成: ルート直下（versioned folder ではなく展開済み）
 
 ## インストール方法
@@ -13,6 +13,30 @@
 
 ```bash
 npm install @flares-llc/agents
+```
+
+インストール時、snapshot は現在の作業ディレクトリへ展開されます。
+
+## 重複ファイルがある場合の扱い
+
+既定では `skip` です。既存ファイルがある場合は上書きせず、そのファイルだけスキップします。
+
+選べるポリシー:
+- `skip`: 既存ファイルを残してスキップする
+- `fail`: 1件でも競合したら停止する
+- `overwrite`: 既存ファイルを上書きする
+- `backup`: 既存ファイルを `.bak.<timestamp>` として退避してから上書きする
+
+環境変数で指定する例:
+
+```bash
+FLARES_AGENTS_ON_CONFLICT=backup npm install @flares-llc/agents
+```
+
+CLI で明示実行する例:
+
+```bash
+npx @flares-llc/agents --target=. --on-conflict=backup
 ```
 
 ## 手動セットアップ
@@ -48,6 +72,7 @@ npm run guard:verify:deterministic
 
 ## リリース一覧
 
+- [v0.0.9](https://github.com/flares-llc/agents/releases/tag/v0.0.9)
 - [v0.0.8](https://github.com/flares-llc/agents/releases/tag/v0.0.8)
 - [v0.0.7](https://github.com/flares-llc/agents/releases/tag/v0.0.7)
 - [v0.0.6](https://github.com/flares-llc/agents/releases/tag/v0.0.6)

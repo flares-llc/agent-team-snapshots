@@ -1,20 +1,28 @@
 {
   "name": "@flares-llc/agents",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Snapshot assets for agent operations (agents, prompts, skills, scripts)",
   "private": false,
   "type": "commonjs",
   "main": "index.js",
+  "bin": {
+    "flares-agents": "scripts/install-package.js"
+  },
   "files": [
     ".github",
+    ".githooks",
+    ".vscode",
     "docs",
+    "lib",
     "scripts",
     "AGENTS.md",
     "README.md",
     "index.js"
   ],
   "scripts": {
-    "hooks:install": "bash scripts/qa/install-hooks.sh"
+    "hooks:install": "bash scripts/qa/install-hooks.sh",
+    "postinstall": "node scripts/install-package.js --postinstall",
+    "test": "node --test tests/*.test.js"
   },
   "publishConfig": {
     "access": "public",
