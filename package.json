@@ -21,6 +21,9 @@
   ],
   "scripts": {
     "hooks:install": "bash scripts/qa/install-hooks.sh",
+    "guard:verify:quick": "bash scripts/qa/verify-gates.sh quick",
+    "guard:verify:full": "bash scripts/qa/verify-gates.sh full",
+    "guard:verify:deterministic": "bash scripts/qa/verify-gates.sh deterministic",
     "postinstall": "node scripts/install-package.js --postinstall",
     "test": "node --test tests/*.test.js"
   },

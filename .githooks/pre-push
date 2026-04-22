@@ -1,5 +1,31 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Reserved for repository-specific checks.
-exit 0
+zero_sha='0000000000000000000000000000000000000000'
+tmp_file="$(mktemp)"
+trap 'rm -f "$tmp_file"' EXIT
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+	[[ -z "${local_ref:-}" ]] && continue
+
+	# Skip deleted refs.
+	if [[ "$local_sha" == "$zero_sha" ]]; then
+		continue
+	fi
+
+	if [[ "$remote_sha" == "$zero_sha" ]]; then
+		if base_sha="$(git merge-base "$local_sha" HEAD 2>/dev/null)"; then
+			git diff --name-only "$base_sha" "$local_sha" >> "$tmp_file" || true
+		else
+			git diff-tree --no-commit-id --name-only -r "$local_sha" >> "$tmp_file" || true
+		fi
+	else
+		git diff --name-only "$remote_sha" "$local_sha" >> "$tmp_file" || true
+	fi
+done
+
+if [[ -s "$tmp_file" ]]; then
+	QA_CHANGED_FILES="$(sort -u "$tmp_file")" ./scripts/qa/verify-gates.sh quick
+else
+	./scripts/qa/verify-gates.sh quick
+fi

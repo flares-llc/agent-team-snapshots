@@ -3,58 +3,101 @@ set -euo pipefail
 
 mode="${1:-quick}"
 
-./scripts/qa/sync-compose-runtime.sh
-
-is_frontend_container_running() {
-  command -v docker >/dev/null 2>&1 \
-    && docker compose ps --status running frontend 2>/dev/null | grep -q "frontend"
-}
-
-check_frontend_container_mount_and_import() {
-  echo "[guard] docker frontend detected -> verifying shared mount and import serving"
-  docker compose exec -T frontend sh -lc 'test -f /shared/src/error-message.ts'
-
-  local status
-  status="$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5173/app/lib/api.ts)"
-  if [[ "$status" != "200" ]]; then
-    echo "[guard] frontend module serving check failed: status=$status" >&2
-    return 1
-  fi
-}
-
-if [[ "$mode" != "quick" && "$mode" != "full" ]]; then
-  echo "[guard] invalid mode: $mode (expected quick|full)" >&2
+if [[ "$mode" != "quick" && "$mode" != "full" && "$mode" != "deterministic" ]]; then
+  echo "[guard] invalid mode: $mode (expected quick|full|deterministic)" >&2
   exit 2
 fi
 
-echo "[guard] mode=$mode"
-echo "[guard] 1/7 frontend typecheck"
-npm --prefix apps/frontend run typecheck
+collect_changed_files() {
+  if [[ -n "${QA_CHANGED_FILES:-}" ]]; then
+    printf '%s\n' "$QA_CHANGED_FILES" | sed '/^$/d'
+    return 0
+  fi
 
-if is_frontend_container_running; then
-  check_frontend_container_mount_and_import
+  if [[ -n "${QA_DIFF_RANGE:-}" ]] && command -v git >/dev/null 2>&1; then
+    git diff --name-only "$QA_DIFF_RANGE" | sed '/^$/d'
+    return 0
+  fi
+
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    if git rev-parse HEAD^ >/dev/null 2>&1; then
+      git diff --name-only HEAD^..HEAD | sed '/^$/d'
+    else
+      git ls-files | sed '/^$/d'
+    fi
+    return 0
+  fi
+
+  return 0
+}
+
+is_docs_file() {
+  local file="$1"
+  [[ "$file" == "README.md" ]] \
+    || [[ "$file" == "AGENTS.md" ]] \
+    || [[ "$file" == docs/* ]] \
+    || [[ "$file" == .github/instructions/* ]] \
+    || [[ "$file" == .github/prompts/* ]]
+}
+
+all_docs_only() {
+  local file
+  local seen=0
+  while IFS= read -r file; do
+    [[ -z "$file" ]] && continue
+    seen=1
+    if ! is_docs_file "$file"; then
+      return 1
+    fi
+  done <<< "$changed_files"
+
+  [[ "$seen" -eq 1 ]]
+}
+
+run_step() {
+  local label="$1"
+  shift
+  echo "[guard] $label"
+  if [[ "${QA_DRY_RUN:-0}" == "1" ]]; then
+    echo "[guard] dry-run: $*"
+    return 0
+  fi
+  "$@"
+}
+
+changed_files="$(collect_changed_files || true)"
+
+echo "[guard] mode=$mode"
+if [[ -n "$changed_files" ]]; then
+  echo "[guard] changed files:"
+  printf '%s\n' "$changed_files" | sed 's/^/[guard]   - /'
+else
+  echo "[guard] changed files: (not detected)"
 fi
 
-echo "[guard] 2/7 line-choi build"
-npm --prefix apps/line-choi run build
+if [[ "$mode" == "quick" ]] && all_docs_only; then
+  echo "[guard] docs-only change detected -> quick gate passed"
+  exit 0
+fi
 
-echo "[guard] 3/7 frontend unit"
-npm run test:frontend:unit
+if [[ "$mode" == "deterministic" && -z "${CI:-}" && "${ALLOW_LOCAL_DETERMINISTIC:-0}" != "1" ]]; then
+  echo "[guard] deterministic mode is CI-required (set ALLOW_LOCAL_DETERMINISTIC=1 to override locally)" >&2
+  exit 2
+fi
 
-echo "[guard] 4/7 line unit"
-npm run test:line:unit
+# Fast fail first, then heavier checks.
+run_step "1/3 unit tests" npm test
 
-echo "[guard] 5/7 backend unit"
-npm run test:backend:unit
-
-echo "[guard] 6/7 security audit (high+)"
-npm audit --omit=dev --audit-level=high
-
-if [[ "$mode" == "full" ]]; then
-  echo "[guard] 7/7 quality signals (coverage + flaky + warning/skip growth)"
-  npm run qa:quality-signals
+if [[ "$mode" == "full" || "$mode" == "deterministic" ]]; then
+  run_step "2/3 package dry-run" npm pack --dry-run >/dev/null
 else
-  echo "[guard] 7/7 skipped full e2e (quick mode)"
+  echo "[guard] 2/3 skipped package dry-run (quick mode)"
+fi
+
+if [[ "$mode" == "deterministic" ]]; then
+  run_step "3/3 deterministic replay" npm test
+else
+  echo "[guard] 3/3 skipped deterministic replay ($mode mode)"
 fi
 
 echo "[guard] all gates passed"

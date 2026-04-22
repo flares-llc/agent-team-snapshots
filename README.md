@@ -61,6 +61,7 @@ npm run guard:verify:deterministic
 
 - 再現ブートストラップ設計: [docs/qa/github-mcp-reproducible-bootstrap.md](docs/qa/github-mcp-reproducible-bootstrap.md)
 - 再現マニフェスト: [docs/qa/repro-manifest.json](docs/qa/repro-manifest.json)
+- push停止対策（quick/strict 分離運用）: [docs/qa/push-gate-separation.md](docs/qa/push-gate-separation.md)
 - Scripts 構成: [scripts/README.md](scripts/README.md)
 - Skills ガイド: [docs/skills/README.md](docs/skills/README.md)
 - コミットメッセージ作成ガイド: [.github/instructions/commit-instructions.md](.github/instructions/commit-instructions.md)
