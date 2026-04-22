@@ -4,7 +4,7 @@
 
 ## 最新バージョン
 
-- 最新: `v0.0.9`
+- 最新: `v0.0.10`
 - 構成: ルート直下（versioned folder ではなく展開済み）
 
 ## インストール方法
@@ -63,6 +63,7 @@ npm run guard:verify:deterministic
 - 再現マニフェスト: [docs/qa/repro-manifest.json](docs/qa/repro-manifest.json)
 - Scripts 構成: [scripts/README.md](scripts/README.md)
 - Skills ガイド: [docs/skills/README.md](docs/skills/README.md)
+- コミットメッセージ作成ガイド: [.github/instructions/commit-instructions.md](.github/instructions/commit-instructions.md)
 
 ## リリース運用ルール（必須）
 
@@ -72,6 +73,7 @@ npm run guard:verify:deterministic
 
 ## リリース一覧
 
+- [v0.0.10](https://github.com/flares-llc/agents/releases/tag/v0.0.10)
 - [v0.0.9](https://github.com/flares-llc/agents/releases/tag/v0.0.9)
 - [v0.0.8](https://github.com/flares-llc/agents/releases/tag/v0.0.8)
 - [v0.0.7](https://github.com/flares-llc/agents/releases/tag/v0.0.7)
