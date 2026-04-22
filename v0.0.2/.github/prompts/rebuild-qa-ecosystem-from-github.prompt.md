@@ -15,7 +15,7 @@ description: "GitHub MCP 参照で QA エコシステムを再構築する。Use
 
 ## 入力パラメータ
 
-- `sourceRepo`: 既定 `flares-llc/kihoku-apps`
+- `sourceRepo`: 既定 `flares-llc/agent-team-snapshots`
 - `sourceRef`: 既定 `main`
 - `manifestPath`: 既定 `docs/qa/repro-manifest.json`
 - `syncMode`: `apply` または `dry-run`（既定 `apply`）
@@ -57,4 +57,4 @@ description: "GitHub MCP 参照で QA エコシステムを再構築する。Use
 ## 実行例
 
 - `/rebuild-qa-ecosystem-from-github`
-- `/rebuild-qa-ecosystem-from-github sourceRepo=flares-llc/kihoku-apps sourceRef=main syncMode=dry-run`
+- `/rebuild-qa-ecosystem-from-github sourceRepo=flares-llc/agent-team-snapshots sourceRef=main syncMode=dry-run`

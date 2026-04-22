@@ -95,7 +95,7 @@ flowchart TD
 
 ## 再現ブートストラップ手順
 
-1. 参照元リポジトリを公開する
+1. このリポジトリ（`flares-llc/agent-team-snapshots`）を参照元として利用する
 2. 参照元に [docs/qa/repro-manifest.json](docs/qa/repro-manifest.json) を配置する
 3. 取り込み先プロジェクトで `/rebuild-qa-ecosystem-from-github` を実行する
 4. プロンプトが GitHub MCP で manifest と対象ファイルを取得して反映する
@@ -124,6 +124,7 @@ flowchart TD
 
 ## 運用上の注意
 
+- `v0.0.2` を作業ルートとして扱い、コマンドは `v0.0.2/` 直下で実行する
 - 参照元変更時は manifest の `version` を更新する
 - 取り込み先への反映は「allowlist のみ」に限定し、アプリ実装コードへは触れない
 - 反映後は差分レビューを行い、無関係な変更を混入させない

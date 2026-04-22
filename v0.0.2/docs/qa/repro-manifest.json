@@ -2,7 +2,7 @@
   "version": "1.1.0",
   "description": "Reproducible QA customization blueprint fetched via GitHub MCP",
   "source": {
-    "repo": "flares-llc/kihoku-apps",
+    "repo": "flares-llc/agent-team-snapshots",
     "ref": "main"
   },
   "profile": "full",
