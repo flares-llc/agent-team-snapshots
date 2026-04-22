@@ -4,10 +4,10 @@
 
 ## 最新バージョン
 
-- 最新: `v0.0.3`
+- 最新: `v0.0.5`
 - 構成: ルート直下（versioned folder ではなく展開済み）
 
-## v0.0.3 のセットアップ（リポジトリ内完結）
+## v0.0.5 のセットアップ（リポジトリ内完結）
 
 このリポジトリのルートを作業ルートにして実行します。
 
@@ -31,3 +31,16 @@ npm run guard:verify:deterministic
 - 再現マニフェスト: [docs/qa/repro-manifest.json](docs/qa/repro-manifest.json)
 - Scripts 構成: [scripts/README.md](scripts/README.md)
 - Skills ガイド: [docs/skills/README.md](docs/skills/README.md)
+
+## リリース運用ルール（必須）
+
+- リリース作業は必ず `writer` エージェント + `writer-release-management` スキルで実施する
+- リリース前に `README.md` / `docs/**` / `AGENTS.md` をブラッシュアップする
+- ブラッシュアップ結果は、差分または確認記録として残す
+
+## リリース一覧
+
+- [v0.0.5](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.5)
+- [v0.0.4](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.4)
+- [v0.0.3](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.3)
+- [v0.0.2](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.2)

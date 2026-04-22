@@ -27,7 +27,7 @@ description: "Writer が gh コマンドで GitHub Release を作成し、リリ
    - `gh release view <tag> --json tagName,name,body,url`
 4. ドキュメントブラッシュアップを実施する。
    - 対象: `README.md` / `docs/**` / `AGENTS.md` / `docs/skills/README.md`
-   - 観点: 最新版表記、リンク切れ、セットアップ手順、変更点説明の鮮度
+   - 観点: 最新版表記（READMEのversion更新を含む）、リンク切れ、セットアップ手順、変更点説明の鮮度
    - 証跡: `git diff -- README.md docs AGENTS.md` で差分確認（差分がなければ確認済みとして記録）
 
 ## Execution Steps
