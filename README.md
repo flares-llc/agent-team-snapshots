@@ -4,10 +4,10 @@
 
 ## 最新バージョン
 
-- 最新: `v0.0.5`
+- 最新: `v0.0.7`
 - 構成: ルート直下（versioned folder ではなく展開済み）
 
-## v0.0.5 のセットアップ（リポジトリ内完結）
+## v0.0.7 のセットアップ（リポジトリ内完結）
 
 このリポジトリのルートを作業ルートにして実行します。
 
@@ -40,7 +40,30 @@ npm run guard:verify:deterministic
 
 ## リリース一覧
 
+- [v0.0.7](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.7)
+- [v0.0.6](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.6)
 - [v0.0.5](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.5)
 - [v0.0.4](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.4)
 - [v0.0.3](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.3)
 - [v0.0.2](https://github.com/flares-llc/agent-team-snapshots/releases/tag/v0.0.2)
+
+## npm パッケージとして利用する
+
+```bash
+npm install @flares-llc/agent-team-snapshots
+```
+
+## GitHub Actions で npm 公開する
+
+- ワークフロー: `.github/workflows/publish-npm.yml`
+- トリガー:
+	- GitHub Release の publish 時
+	- `workflow_dispatch` 手動実行
+- 必須シークレット:
+	- `NPM_TOKEN`（npm publish 権限を持つ token）
+- 公開先:
+	- npm registry（`https://registry.npmjs.org/`）
+
+運用メモ:
+- リリースタグ `vX.Y.Z` と `package.json` の `version` を一致させる（ワークフローで検証）
+- リリース前に README/docs/AGENTS のブラッシュアップを必ず実施する

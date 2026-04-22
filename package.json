@@ -1,0 +1,40 @@
+{
+  "name": "@flares-llc/agent-team-snapshots",
+  "version": "0.0.7",
+  "description": "Snapshot assets for agent operations (agents, prompts, skills, scripts)",
+  "private": false,
+  "type": "commonjs",
+  "main": "index.js",
+  "files": [
+    ".github",
+    "docs",
+    "scripts",
+    "AGENTS.md",
+    "README.md",
+    "index.js"
+  ],
+  "scripts": {
+    "hooks:install": "bash scripts/qa/install-hooks.sh"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flares-llc/agent-team-snapshots.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flares-llc/agent-team-snapshots/issues"
+  },
+  "homepage": "https://github.com/flares-llc/agent-team-snapshots#readme",
+  "keywords": [
+    "agents",
+    "copilot",
+    "skills",
+    "prompts",
+    "qa"
+  ],
+  "author": "flares-llc",
+  "license": "UNLICENSED"
+}
